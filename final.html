@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For You ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,500;1,600&display=swap" rel="stylesheet">
+
+<style>
+body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    background:
+  linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+  url("Backimg.jpeg");
+
+    background-size:cover;
+    background-position:center;
+     overflow-y:auto;
+    overflow-x:hidden;
+    font-family:'Poppins',sans-serif;
+    padding:60px 0;
+}
+
+/* 💖 CONTAINER */
+.final{
+    background:rgba(255,255,255,0.12);
+    padding:50px 55px;
+    border-radius:35px;
+    width:80%;
+    max-width:800px;
+    text-align:center;
+    box-shadow:0 30px 90px rgba(0,0,0,0.55);
+    backdrop-filter:blur(10px);
+    animation:fadeIn 2s ease;
+    position:relative;
+    z-index:2;
+
+    margin-top:300px; /* 👈 moves text box down */
+}
+
+
+/* 💝 TITLE */
+.final h1{
+    font-family:'Great Vibes',cursive;
+    font-size:52px;
+    color:#fff;
+    margin-bottom:30px;
+    text-shadow:0 0 35px rgba(255,180,220,1);
+    animation:heartbeat 2.8s infinite;
+}
+
+/* 📝 LINES */
+#lineBox{
+    margin-top:20px;
+}
+
+.line{
+    font-family:'Playfair Display', serif;
+    font-style:italic;
+    font-size:22px;
+    line-height:1.4;
+    letter-spacing:0.4px;
+    word-spacing:6px;
+    color:#fff;
+    margin-bottom:18px;
+    opacity:0;
+    text-shadow:0 0 25px rgba(255,180,220,0.6);
+}
+
+
+/* ✨ SOFT GLOW HEARTS (CANVAS) */
+canvas{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:1;
+}
+
+/* ✨ ANIMATIONS */
+@keyframes fadeIn{
+    from{opacity:0; transform:scale(0.92)}
+    to{opacity:1; transform:scale(1)}
+}
+
+@keyframes heartbeat{
+    0%,100%{transform:scale(1)}
+    50%{transform:scale(1.15)}
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="hearts"></canvas>
+
+<div class="final">
+<h1>To My Heart 💖</h1>
+    <div id="lineBox"></div>
+</div>
+
+<script>
+/* 💌 ROMANTIC LINES */
+const lines = [
+"Heyyy my bujji bangaram 💖",
+"Ni kosam edho koncham chesa… gift em odhu antunnav ani",
+"Em ivvalo ardham kaale 🤧,Hope you liked it…",
+"Niku em kavali ana nannu adugu,Nen unna ni kosam 🫂",
+"Niku em gift kavalo adagoch kadha ne Endhuke itla chestunnav 🙁",
+"Naku ninnu brathimaladali ane untadi",
+"Ala brathimaladam ante naku chala istam 🥰😂",
+"Appudappudu nuvvu kuda brathimaladali ani untadi 😂",
+"Naku ni tho life long gadapali ani undi",
+"Endaka chusina konni sweet moments…",
+"Naku ala millions of memories kavali,Only with you ♥️",
+"I want you in my life 🤌",
+"Accept cheseyochu kadane tondaragaa…",
+"Nethi mida pettukoni chusukunta 🤌❣️",
+
+"Naku nuvvu ante pichi istame bujjikonda",
+"I loveeeee youuuuuu sooo sooo muchhhh 🥰🥰🫂🫂",
+
+"Wanna know how I felt when I saw you for the first time?",
+"If yes…",
+"Stayyyy tuneddddd… 💫 My Babyyy girll💖",
+
+"Once again…",
+"Happyy Happyy Birthdayyyy to My Girl ♥️🫂",
+"Enjoyyy… it’s your dayyy 🤌🥰"
+];
+
+let lineIndex = 0;
+
+/* ⌨️ TYPEWRITER */
+function typeLine(){
+    if(lineIndex >= lines.length) return;
+
+    const line = document.createElement("div");
+    line.className = "line";
+    document.getElementById("lineBox").appendChild(line);
+
+    let charIndex = 0;
+    const text = lines[lineIndex];
+    line.style.opacity = 1;
+
+    const typer = setInterval(()=>{
+        let ch = text.charAt(charIndex);
+        line.innerHTML += (ch === " ") ? "&nbsp;" : ch;
+        charIndex++;
+
+        if(charIndex === text.length){
+            clearInterval(typer);
+            lineIndex++;
+            setTimeout(typeLine,700);
+        }
+    },45);
+}
+typeLine();
+
+/* 💫 CANVAS HEART PARTICLES (SOFT & ROMANTIC) */
+const canvas = document.getElementById("hearts");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const hearts = [];
+
+function Heart(){
+    this.x = Math.random()*canvas.width;
+    this.y = canvas.height + Math.random()*200;
+    this.size = Math.random()*6 + 4;
+    this.speed = Math.random()*0.6 + 0.4;
+    this.alpha = Math.random()*0.5 + 0.3;
+}
+
+Heart.prototype.draw = function(){
+    ctx.fillStyle = `rgba(255,160,200,${this.alpha})`;
+    ctx.beginPath();
+    ctx.moveTo(this.x, this.y);
+    ctx.bezierCurveTo(this.x-6,this.y-6,this.x-12,this.y+4,this.x,this.y+14);
+    ctx.bezierCurveTo(this.x+12,this.y+4,this.x+6,this.y-6,this.x,this.y);
+    ctx.fill();
+};
+
+Heart.prototype.update = function(){
+    this.y -= this.speed;
+    if(this.y < -20){
+        this.y = canvas.height + 20;
+        this.x = Math.random()*canvas.width;
+    }
+};
+
+for(let i=0;i<60;i++){
+    hearts.push(new Heart());
+}
+
+function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    hearts.forEach(h=>{
+        h.update();
+        h.draw();
+    });
+    requestAnimationFrame(animate);
+}
+animate();
+
+window.onresize = ()=>{
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+};
+</script>
+
+</body>
+</html>

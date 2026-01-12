@@ -1,0 +1,44 @@
+body{
+    background:#fff0f5;
+    text-align:center;
+    font-family:sans-serif;
+    padding:30px;
+}
+
+h1{
+    color:#ff4e8a;
+    margin-bottom:30px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:20px;
+}
+
+.grid img{
+    width:100%;
+    border-radius:20px;
+    transition:0.4s;
+    animation: float 3s infinite;
+}
+
+.grid img:hover{
+    transform:scale(1.1);
+}
+
+button{
+    margin-top:40px;
+    padding:12px 30px;
+    border:none;
+    background:#ff4e8a;
+    color:white;
+    border-radius:30px;
+    font-size:16px;
+}
+
+@keyframes float{
+    0%{transform:translateY(0)}
+    50%{transform:translateY(-8px)}
+    100%{transform:translateY(0)}
+}

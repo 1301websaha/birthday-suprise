@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sweet Memories 💕</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+body{
+    margin:0;
+min-height:110vh;   /* extra space to scroll */
+overflow-y:auto;
+overflow-x:hidden;
+    background:
+      radial-gradient(circle at center, rgba(255,120,180,0.25), transparent 50%),
+      linear-gradient(120deg,#0f0c29,#302b63,#24243e);
+    font-family:'Poppins',sans-serif;
+}
+
+/* 💖 TITLE */
+h1{
+    position:absolute;
+    top:25px;
+    width:100%;
+    text-align:center;
+    font-family:'Great Vibes',cursive;
+    font-size:48px;
+    color:#ff9acb;
+    text-shadow:0 0 25px rgba(255,160,200,0.9);
+    z-index:10;
+}
+
+/* 💓 BEATING HEART GLOW */
+#heart-glow{
+    position:absolute;
+    top:400px;
+    left:50%;
+    transform:translateX(-50%);
+    width:360px;
+    height:360px;
+    background:radial-gradient(circle,#ff5fa2 20%,transparent 60%);
+    filter:blur(35px);
+    animation:beat 2.2s infinite;
+    z-index:1;
+}
+
+/* ❤️ IMAGE FIELD */
+#heart-field{
+    position:absolute;
+    top:150px;
+    width:100%;
+    height:380px;
+    z-index:3;
+}
+
+/* 🖼️ IMAGES */
+.memory{
+    position:absolute;
+    width:110px;
+    height:110px;
+    object-fit:cover;
+    border-radius:18px;
+    box-shadow:0 20px 45px rgba(0,0,0,0.6);
+    opacity:0;
+    transform:scale(0.3);
+    transition:
+        transform 0.9s cubic-bezier(.25,.8,.25,1),
+        box-shadow 0.9s ease,
+        filter 0.9s ease,
+        opacity 0.6s ease;
+    animation:
+      appear 1.3s ease forwards,
+      float 7s ease-in-out infinite;
+    cursor:pointer;
+    z-index:3;
+}
+
+/* 🌫️ BLUR OTHERS */
+/* 🌫️ BLUR ONLY NON-ACTIVE IMAGES */
+#heart-field.blur .memory:not(.active){
+    filter:blur(6px) brightness(0.4);
+    opacity:0.5;
+    transform:scale(0.7);
+}
+
+/* 🛑 ACTIVE IMAGE ALWAYS CLEAR */
+.memory.active{
+    filter:brightness(1.25) saturate(1.4) !important;
+}
+
+/* 🎬 FULL SCREEN FOCUS */
+.memory.active{
+    position:fixed;
+
+    /* ⬇️ SAFE CENTER WITH PADDING */
+    top:55%;
+    left:50%;
+
+    /* 🖼️ BIG BUT NOT OVERLAPPING */
+    width:60vw;
+    height:60vh;
+    max-width:500px;
+
+    transform:translate(-50%, -50%) !important;
+
+    border-radius:25px;
+    z-index:9999;
+
+    filter:brightness(1.25) saturate(1.4);
+    box-shadow:0 60px 160px rgba(255,90,160,1);
+    opacity:1;
+
+    /* 🛑 STOP FLOATING */
+    animation:none !important;
+}
+
+
+/* 💞 BUTTON */
+button{
+    position:fixed;
+    bottom:15px;
+    left:50%;
+    transform:translateX(-50%);
+    padding:16px 46px;
+    border:none;
+    border-radius:40px;
+    font-size:18px;
+    color:white;
+    background:linear-gradient(45deg,#ff4e8a,#ff85a2);
+    box-shadow:0 0 45px rgba(255,78,138,0.9);
+    cursor:pointer;
+    display:none;
+    animation:pulse 2s infinite;
+    z-index:10;
+}
+
+/* ✨ ANIMATIONS */
+@keyframes appear{
+    to{opacity:1; transform:scale(1)}
+}
+@keyframes float{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-10px)}
+}
+@keyframes pulse{
+    0%,100%{transform:translateX(-50%) scale(1)}
+    50%{transform:translateX(-50%) scale(1.12)}
+}
+@keyframes beat{
+    0%,100%{transform:translateX(-50%) scale(1)}
+    50%{transform:translateX(-50%) scale(1.18)}
+}
+</style>
+</head>
+
+<body>
+
+<h1>Some Sweet Memories 💖</h1>
+
+<div id="heart-glow"></div>
+<div id="heart-field"></div>
+
+<button id="finalBtn" onclick="final()">One Last Surprise 💞</button>
+
+<script>
+/* 📸 IMAGE LIST */
+const images = [
+ "img1.jpeg","img2.jpeg","img3.jpeg","img4.jpeg","img5.jpeg",
+ "img6.jpeg","img7.jpeg","img8.jpeg","img13.jpeg","img10.jpeg",
+ "img11.jpeg","img12.jpeg","img 9.jpeg","img 14.jpeg","img 15.jpeg"
+];
+
+const field = document.getElementById("heart-field");
+
+/* ❤️ HEART SHAPE COORDS */
+const cx = window.innerWidth/2;
+const cy = 400;
+const scale = 9;
+const points = [];
+
+for(let t=0;t<Math.PI*2;t+=0.42){
+    const x=16*Math.pow(Math.sin(t),3);
+    const y=-(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t));
+    points.push({x:cx+x*scale,y:cy+y*scale});
+}
+
+/* 🎬 IMAGE LOAD */
+let i=0;
+function showNext(){
+    if(i>=images.length){
+        setTimeout(()=>finalBtn.style.display="block",1200);
+        return;
+    }
+    const img=document.createElement("img");
+    img.src=images[i];
+    img.className="memory";
+    img.style.left=points[i].x-55+"px";
+    img.style.top=points[i].y-55+"px";
+    field.appendChild(img);
+    i++;
+    setTimeout(showNext,900);
+}
+showNext();
+
+/* 🎥 HOVER ZOOM */
+field.addEventListener("mouseover", e=>{
+    if(e.target.classList.contains("memory")){
+        field.classList.add("blur");
+        document.querySelectorAll(".memory").forEach(img=>img.classList.remove("active"));
+        e.target.classList.add("active");
+    }
+});
+
+field.addEventListener("mouseout", e=>{
+    if(e.target.classList.contains("memory")){
+        field.classList.remove("blur");
+        document.querySelectorAll(".memory").forEach(img=>img.classList.remove("active"));
+    }
+});
+
+function final(){
+    window.location.href="final.html";
+}
+</script>
+
+</body>
+</html>
